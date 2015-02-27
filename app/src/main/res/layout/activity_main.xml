@@ -1,36 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
-    android:layout_height="fill_parent">
+    android:layout_height="fill_parent"
+    android:background="#ff000000">
 
     <com.androidplot.xy.XYPlot
         android:id="@+id/mySimpleXYPlot"
         android:layout_width="fill_parent"
         android:layout_height="250dp"
-        androidPlot.title="Nanners' Data"
-        androidPlot.domainLabel="Domain"
-        androidPlot.rangeLabel="Range"
+
+        androidPlot.rangeLabel="Sunlight"
         androidPlot.titleWidget.labelPaint.textSize="15dp"
         androidPlot.domainLabelWidget.labelPaint.textSize="15dp"
         androidPlot.rangeLabelWidget.labelPaint.textSize="15dp"
         androidPlot.graphWidget.marginTop="20dp"
-        androidPlot.graphWidget.marginLeft="15dp"
+        androidPlot.graphWidget.marginLeft="5dp"
         androidPlot.graphWidget.marginBottom="25dp"
-        androidPlot.graphWidget.marginRight="10dp"
-        androidPlot.graphWidget.rangeLabelPaint.textSize="15dp"
-        androidPlot.graphWidget.rangeOriginLabelPaint.textSize="15dp"
-        androidPlot.graphWidget.domainLabelPaint.textSize="15dp"
-        androidPlot.graphWidget.domainOriginLabelPaint.textSize="15dp"
-        androidPlot.legendWidget.textPaint.textSize="15dp"
-        androidPlot.legendWidget.iconSizeMetrics.heightMetric.value="15dp"
-        androidPlot.legendWidget.iconSizeMetrics.widthMetric.value="15dp"
-        androidPlot.legendWidget.heightMetric.value="25dp"
-        androidPlot.legendWidget.positionMetrics.anchor="right_bottom"
-        androidPlot.graphWidget.gridLinePaint.color="#000000"
+        androidPlot.graphWidget.marginRight="20dp"
+        androidPlot.graphWidget.rangeLabelPaint.textSize="0dp"
+        androidPlot.graphWidget.rangeOriginLabelPaint.textSize="0dp"
+        androidPlot.graphWidget.domainLabelPaint.textSize="0dp"
+        androidPlot.graphWidget.domainOriginLabelPaint.textSize="0dp"
+
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_marginBottom="38dp" />
+        android:layout_marginBottom="38dp"
+        android:background="#ff000000" />
 
     <TextView
         android:id="@+id/label"
@@ -66,6 +62,14 @@
         android:layout_alignTop="@id/send"
         android:text="Close" />
 
+    <Button
+        android:id="@+id/add"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Add"
+        android:layout_below="@+id/open"
+        android:layout_alignLeft="@+id/close"
+        android:layout_alignStart="@+id/close" />
 
 
 </RelativeLayout>

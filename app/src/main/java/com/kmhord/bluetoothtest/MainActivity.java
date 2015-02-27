@@ -1,35 +1,25 @@
 package com.kmhord.bluetoothtest;
 
-//https://bellcode.wordpress.com/2012/01/02/android-and-arduino-bluetooth-communication/
-        import android.app.Activity;
-        import android.bluetooth.BluetoothAdapter;
-        import android.bluetooth.BluetoothDevice;
-        import android.bluetooth.BluetoothSocket;
-        import android.content.Intent;
-        import android.graphics.DashPathEffect;
-        import android.os.Bundle;
-        import android.os.Handler;
-        import android.view.View;
-        import android.widget.TextView;
-        import android.widget.EditText;
-        import android.widget.Button;
-        import java.io.IOException;
-        import java.io.InputStream;
-        import java.io.OutputStream;
-        import java.util.Set;
-        import java.util.UUID;
-        import java.util.Arrays;
+import android.app.Activity;
+import android.bluetooth.BluetoothAdapter;
+import android.bluetooth.BluetoothDevice;
+import android.bluetooth.BluetoothSocket;
+import android.content.Intent;
+import android.os.Bundle;
+import android.os.Handler;
+import android.view.View;
+import android.widget.TextView;
+import android.widget.EditText;
+import android.widget.Button;
 
-        import android.graphics.Color;
-        import android.graphics.Paint;
+import com.androidplot.xy.XYPlot;
 
-        import com.androidplot.Plot;
-        import com.androidplot.util.PixelUtils;
-        import com.androidplot.xy.XYSeries;
-        import com.androidplot.xy.*;
-        import java.text.DecimalFormat;
-        import java.util.Observable;
-        import java.util.Observer;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.util.Set;
+import java.util.UUID;
+
 
 public class MainActivity extends Activity
 {
@@ -43,12 +33,10 @@ public class MainActivity extends Activity
     Thread workerThread;
     byte[] readBuffer;
     int readBufferPosition;
-    int counter;
-    int newdata;
     volatile boolean stopWorker;
 
-    Number[] seriesOfNumbers = new Number[10];
     private XYPlot mySimpleXYPlot;
+    Number[] storeddata= new Number[] {0,1,2,3,4,5,4,3,2,0};
 
     @Override
     public void onCreate(Bundle savedInstanceState)
@@ -59,9 +47,29 @@ public class MainActivity extends Activity
         Button openButton = (Button)findViewById(R.id.open);
         Button sendButton = (Button)findViewById(R.id.send);
         Button closeButton = (Button)findViewById(R.id.close);
+        Button addButton = (Button)findViewById(R.id.add);
+
         myLabel = (TextView)findViewById(R.id.label);
         myTextbox = (EditText)findViewById(R.id.entry);
+        final GraphData graphdata = new GraphData();
 
+        mySimpleXYPlot = (XYPlot) findViewById(R.id.mySimpleXYPlot);
+
+        graphdata.initalplot(storeddata, mySimpleXYPlot); // Starts graph
+
+        //Add Button
+        addButton.setOnClickListener(new View.OnClickListener()
+        {
+            public void onClick(View v)
+            {
+                if(myTextbox.getText().toString().equals("")) {
+                    graphdata.plotdata("0", storeddata, mySimpleXYPlot);
+                }
+                else {
+                    graphdata.plotdata(myTextbox.getText().toString(), storeddata, mySimpleXYPlot);
+                }
+            }
+        });
 
         //Open Button
         openButton.setOnClickListener(new View.OnClickListener()
@@ -149,6 +157,7 @@ public class MainActivity extends Activity
     void beginListenForData()
     {
         final Handler handler = new Handler();
+        final GraphData graphdata = new GraphData();
         final byte delimiter = 10; //This is the ASCII code for a newline character
 
 
@@ -183,9 +192,7 @@ public class MainActivity extends Activity
                                         public void run()
                                         {
                                             myLabel.setText(sdata);
-                                            mySimpleXYPlot.clear();
-                                            graph(sdata);
-                                            mySimpleXYPlot.redraw();
+                                            graphdata.plotdata(sdata,storeddata,mySimpleXYPlot);
                                         }
                                     });
                                 }
@@ -223,38 +230,5 @@ public class MainActivity extends Activity
         mmSocket.close();
         myLabel.setText("Bluetooth Closed");
     }
-
-    public void graph(String newdata) {
-
-        // initialize our XYPlot reference:
-        mySimpleXYPlot = (XYPlot) findViewById(R.id.mySimpleXYPlot);
-
-        for (int i = 0; i < seriesOfNumbers.length-1; i++) {
-            seriesOfNumbers[i]=seriesOfNumbers[i+1];
-        }
-        seriesOfNumbers[seriesOfNumbers.length]=Float.parseFloat(newdata);
-
-        // Turn the above arrays into XYSeries':
-        XYSeries series1 = new SimpleXYSeries(Arrays.asList(seriesOfNumbers),
-                // SimpleXYSeries takes a List so turn our array into a list
-                SimpleXYSeries.ArrayFormat.Y_VALS_ONLY,
-                // Y_VALS_ONLY means use the element index as the x value
-                "Series1"); // Set the display title of the series
-
-        // Create a formatter to use for drawing a series using
-        // LineAndPointRenderer:
-        LineAndPointFormatter series1Format = new LineAndPointFormatter();
-        series1Format.setPointLabelFormatter(new PointLabelFormatter());
-        series1Format.configure(getApplicationContext(),R.xml.line_point_formatter_with_plf1);
-
-        // add a new series' to the xyplot:
-        mySimpleXYPlot.addSeries(series1, series1Format);
-
-        // reduce the number of range labels
-        mySimpleXYPlot.setTicksPerRangeLabel(3);
-
-
-    }
-
 
 }
