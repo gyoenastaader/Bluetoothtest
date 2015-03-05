@@ -32,6 +32,7 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:text="Type here:"/>
+
     <EditText
         android:id="@+id/entry"
         android:layout_width="fill_parent"
@@ -60,11 +61,27 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Add"
-        android:layout_below="@+id/entry"
+        android:layout_below="@+id/open"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Last Update:"
+        android:id="@+id/Update"
+        android:layout_alignBottom="@+id/close"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginLeft="32dp"
-        android:layout_marginStart="32dp" />
+        android:layout_alignParentStart="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Exposure Time Left: "
+        android:id="@+id/ExpTime"
+        android:layout_alignBottom="@+id/add"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
 
 
 </RelativeLayout>

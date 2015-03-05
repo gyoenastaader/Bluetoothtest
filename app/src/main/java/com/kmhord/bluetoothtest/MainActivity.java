@@ -24,16 +24,27 @@ import java.util.UUID;
 public class MainActivity extends Activity
 {
     TextView myLabel;
+    TextView ExpTime;
+    TextView UpTime;
+
     EditText myTextbox;
+
     BluetoothAdapter mBluetoothAdapter;
     BluetoothSocket mmSocket;
     BluetoothDevice mmDevice;
+
     OutputStream mmOutputStream;
     InputStream mmInputStream;
+
     Thread workerThread;
     byte[] readBuffer;
     int readBufferPosition;
     volatile boolean stopWorker;
+
+    long startime = 0;
+    long elapsetime = 0;
+
+    Number UVI;
 
     private XYPlot mySimpleXYPlot;
     Number[] storeddata= new Number[] {0,1,2,3,4,5,4,3,2,0};
@@ -52,6 +63,9 @@ public class MainActivity extends Activity
         Button addButton = (Button)findViewById(R.id.add);
 
         myLabel = (TextView)findViewById(R.id.label);
+        ExpTime = (TextView)findViewById(R.id.ExpTime);
+        UpTime = (TextView)findViewById(R.id.Update);
+
         myTextbox = (EditText)findViewById(R.id.entry);
 
         mySimpleXYPlot = (XYPlot) findViewById(R.id.mySimpleXYPlot);
@@ -64,11 +78,11 @@ public class MainActivity extends Activity
             public void onClick(View v)
             {
                 if(myTextbox.getText().toString().equals("")) {
-                    storeddata=CalculateUVI.updatehistory(cUVI.calcuvi("320"), storeddata);
+                    storeddata=CalculateUVI.updatehistory(cUVI.UVindex("320"), storeddata);
 
                 }
                 else {
-                    storeddata=CalculateUVI.updatehistory(cUVI.calcuvi(myTextbox.getText().toString()), storeddata);
+                    storeddata=CalculateUVI.updatehistory(cUVI.UVindex(myTextbox.getText().toString()), storeddata);
                 }
                 graphdata.plotxygraph(storeddata, mySimpleXYPlot);
             }
@@ -151,7 +165,6 @@ public class MainActivity extends Activity
         final GraphData graphdata = new GraphData();
         final byte delimiter = 10; //This is the ASCII code for a newline character
 
-
         stopWorker = false;
         readBufferPosition = 0;
         readBuffer = new byte[1024];
@@ -159,8 +172,14 @@ public class MainActivity extends Activity
         {
             public void run()
             {
+                startime= CalculateUVI.starttime();
+
                 while(!Thread.currentThread().isInterrupted() && !stopWorker)
                 {
+                    //start update timer
+                    elapsetime=startime - CalculateUVI.starttime();
+                    UpTime.setText("Last Update: " + elapsetime + " seconds ago");
+
                     try
                     {
                         int bytesAvailable = mmInputStream.available();
@@ -182,11 +201,16 @@ public class MainActivity extends Activity
                                     {
                                         public void run()
                                         {
-                                            myLabel.setText(sdata);
-
                                             //Calculate the UV index, and immediate pass it to store
-                                            storeddata=CalculateUVI.updatehistory(cUVI.calcuvi(sdata), storeddata);
+                                            UVI=cUVI.UVindex(sdata);
+                                            storeddata=CalculateUVI.updatehistory(UVI, storeddata);
                                             graphdata.plotxygraph(storeddata, mySimpleXYPlot);
+
+                                            //End update timer
+                                            startime= CalculateUVI.starttime();
+
+                                            myLabel.setText(sdata);
+                                            ExpTime.setText("Max Exposure Time: " + CalculateUVI.Burntime(UVI) + " min");
 
                                         }
                                     });

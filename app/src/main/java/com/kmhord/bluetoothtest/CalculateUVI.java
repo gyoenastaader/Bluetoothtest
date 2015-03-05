@@ -1,5 +1,7 @@
 package com.kmhord.bluetoothtest;
 
+import java.util.Date;
+
 public class CalculateUVI{
 
 
@@ -14,7 +16,7 @@ public class CalculateUVI{
      }
 
     //This class will require future calibration.
-    public Number calcuvi(String newdata){
+    public static Number UVindex(String newdata){
 
         double ndata = Double.parseDouble(newdata);
         Number uvi;
@@ -28,5 +30,42 @@ public class CalculateUVI{
         return uvi;
     }
 
+    public static long starttime(){
+
+        long StartTime = new Date().getTime();
+
+        return StartTime;
+
+    }
+
+    public static long endtime(){
+
+        long EndTime = new Date().getTime();
+
+        return EndTime;
+
+    }
+
+    public static Number Burntime(Number Nuvi){
+
+        //SkinType
+        // 1 -> 67min / UVI
+        // 2 -> 100min / UVI
+        // 3 -> 200min / UVI
+        // 4 -> 300min / UVI
+        // 5 -> 400min / UVI
+        // 6 -> 500min / UVI
+        // http://www.himaya.com/solar/avoidsunburn.html
+
+        int type = 1;
+        int[] skinlimit = {67, 100, 200, 300, 400, 500};
+        double SPF = 15;
+        double Duvi = (double) Nuvi;
+        double burntime;
+
+        burntime = skinlimit[type]*SPF / Duvi;
+
+        return burntime;
+    }
 
 }

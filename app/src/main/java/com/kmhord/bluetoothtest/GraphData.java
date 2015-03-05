@@ -15,11 +15,6 @@ import com.androidplot.xy.XYStepMode;
 
 import java.text.DecimalFormat;
 import java.util.Arrays;
-import java.util.Collections;
-
-/**
- * Created by Kyle on 2/24/2015.
- */
 
 public class GraphData{
 
