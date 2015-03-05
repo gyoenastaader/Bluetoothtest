@@ -22,11 +22,10 @@
         androidPlot.graphWidget.domainLabelPaint.textSize="0dp"
         androidPlot.graphWidget.domainOriginLabelPaint.textSize="0dp"
 
+        android:background="#ff000000"
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginBottom="38dp"
-        android:background="#ff000000" />
+        android:layout_alignParentStart="true" />
 
     <TextView
         android:id="@+id/label"
@@ -47,29 +46,25 @@
         android:layout_alignParentRight="true"
         android:layout_marginLeft="10dip"
         android:text="Open" />
-    <Button
-        android:id="@+id/send"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_toLeftOf="@id/open"
-        android:layout_alignTop="@id/open"
-        android:text="Send" />
+
     <Button
         android:id="@+id/close"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_toLeftOf="@id/send"
-        android:layout_alignTop="@id/send"
-        android:text="Close" />
+        android:text="Close"
+        android:layout_toLeftOf="@id/open"
+        android:layout_alignTop="@id/open" />
 
     <Button
         android:id="@+id/add"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Add"
-        android:layout_below="@+id/open"
-        android:layout_alignLeft="@+id/close"
-        android:layout_alignStart="@+id/close" />
+        android:layout_below="@+id/entry"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginLeft="32dp"
+        android:layout_marginStart="32dp" />
 
 
 </RelativeLayout>

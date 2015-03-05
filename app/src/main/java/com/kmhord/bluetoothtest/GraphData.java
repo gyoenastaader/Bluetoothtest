@@ -15,30 +15,18 @@ import com.androidplot.xy.XYStepMode;
 
 import java.text.DecimalFormat;
 import java.util.Arrays;
+import java.util.Collections;
 
 /**
  * Created by Kyle on 2/24/2015.
  */
 
-public class GraphData extends MainActivity{
+public class GraphData{
 
 
-   public void plotdata(String newdata, Number[] storeddata, XYPlot mySimpleXYPlot){
-        // initialize our XYPlot reference:
+    public void plotxygraph(Number[] storeddata, XYPlot mySimpleXYPlot){
 
         mySimpleXYPlot.clear();
-
-        for (int i = 0; i < storeddata.length-1; i++) {
-            storeddata[i]=storeddata[i+1];
-        }
-        storeddata[storeddata.length-1]=Float.parseFloat(newdata);
-
-        initalplot(storeddata,mySimpleXYPlot);
-
-        mySimpleXYPlot.redraw();
-    }
-
-    public void initalplot(Number[] storeddata, XYPlot mySimpleXYPlot){
 
         // Turn the above arrays into XYSeries':
         XYSeries series1 = new SimpleXYSeries(Arrays.asList(storeddata),
@@ -81,7 +69,7 @@ public class GraphData extends MainActivity{
         mySimpleXYPlot.setDomainStepValue(1);
 
         //Range
-        mySimpleXYPlot.setRangeBoundaries(0, 6, BoundaryMode.FIXED);
+        mySimpleXYPlot.setRangeBoundaries(0, 11, BoundaryMode.FIXED);
         mySimpleXYPlot.setRangeStepValue(1);
         //mySimpleXYPlot.setRangeStep(XYStepMode.SUBDIVIDE, values.length);
         mySimpleXYPlot.setRangeValueFormat(new DecimalFormat("0"));
@@ -114,9 +102,7 @@ public class GraphData extends MainActivity{
         // add a new series' to the xyplot:
         mySimpleXYPlot.addSeries(series1, series1Format);
 
-        // by default, AndroidPlot displays developer guides to aid in laying out your plot.
-        // To get rid of them call disableAllMarkup():
-         //mySimpleXYPlot.disableAllMarkup();
+        mySimpleXYPlot.redraw();
 
     }
 

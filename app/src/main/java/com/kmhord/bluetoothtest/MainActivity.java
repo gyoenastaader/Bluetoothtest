@@ -41,21 +41,22 @@ public class MainActivity extends Activity
     @Override
     public void onCreate(Bundle savedInstanceState)
     {
+        final CalculateUVI cUVI = new CalculateUVI();
+        final GraphData graphdata = new GraphData();
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
         Button openButton = (Button)findViewById(R.id.open);
-        Button sendButton = (Button)findViewById(R.id.send);
         Button closeButton = (Button)findViewById(R.id.close);
         Button addButton = (Button)findViewById(R.id.add);
 
         myLabel = (TextView)findViewById(R.id.label);
         myTextbox = (EditText)findViewById(R.id.entry);
-        final GraphData graphdata = new GraphData();
 
         mySimpleXYPlot = (XYPlot) findViewById(R.id.mySimpleXYPlot);
 
-        graphdata.initalplot(storeddata, mySimpleXYPlot); // Starts graph
+        graphdata.plotxygraph(storeddata, mySimpleXYPlot); // Starts graph
 
         //Add Button
         addButton.setOnClickListener(new View.OnClickListener()
@@ -63,11 +64,13 @@ public class MainActivity extends Activity
             public void onClick(View v)
             {
                 if(myTextbox.getText().toString().equals("")) {
-                    graphdata.plotdata("0", storeddata, mySimpleXYPlot);
+                    storeddata=CalculateUVI.updatehistory(cUVI.calcuvi("320"), storeddata);
+
                 }
                 else {
-                    graphdata.plotdata(myTextbox.getText().toString(), storeddata, mySimpleXYPlot);
+                    storeddata=CalculateUVI.updatehistory(cUVI.calcuvi(myTextbox.getText().toString()), storeddata);
                 }
+                graphdata.plotxygraph(storeddata, mySimpleXYPlot);
             }
         });
 
@@ -80,19 +83,6 @@ public class MainActivity extends Activity
                 {
                     findBT();
                     openBT();
-                }
-                catch (IOException ex) { }
-            }
-        });
-
-        //Send Button
-        sendButton.setOnClickListener(new View.OnClickListener()
-        {
-            public void onClick(View v)
-            {
-                try
-                {
-                    sendData();
                 }
                 catch (IOException ex) { }
             }
@@ -157,6 +147,7 @@ public class MainActivity extends Activity
     void beginListenForData()
     {
         final Handler handler = new Handler();
+        final CalculateUVI cUVI = new CalculateUVI();
         final GraphData graphdata = new GraphData();
         final byte delimiter = 10; //This is the ASCII code for a newline character
 
@@ -192,7 +183,11 @@ public class MainActivity extends Activity
                                         public void run()
                                         {
                                             myLabel.setText(sdata);
-                                            graphdata.plotdata(sdata,storeddata,mySimpleXYPlot);
+
+                                            //Calculate the UV index, and immediate pass it to store
+                                            storeddata=CalculateUVI.updatehistory(cUVI.calcuvi(sdata), storeddata);
+                                            graphdata.plotxygraph(storeddata, mySimpleXYPlot);
+
                                         }
                                     });
                                 }
@@ -214,13 +209,6 @@ public class MainActivity extends Activity
         workerThread.start();
     }
 
-    void sendData() throws IOException
-    {
-        String msg = myTextbox.getText().toString();
-        msg += "\n";
-        mmOutputStream.write(msg.getBytes());
-        myLabel.setText("Data Sent");
-    }
 
     void closeBT() throws IOException
     {
