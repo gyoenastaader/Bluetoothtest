@@ -1,4 +1,4 @@
-package com.kmhord.bluetoothtest;
+package com.kmhord.SpitFire;
 
 import java.util.Date;
 
@@ -10,16 +10,16 @@ public class CalculateUVI{
          for (int i = 0; i < storeddata.length-1; i++) {
              storeddata[i]=storeddata[i+1];
          }
-         storeddata[storeddata.length-1]=newdata;
+         storeddata[storeddata.length-1]=  newdata;
 
         return storeddata;
      }
 
     //This class will require future calibration.
-    public static Number UVindex(String newdata){
+    public static double UVindex(String newdata){
 
         double ndata = Double.parseDouble(newdata);
-        Number uvi;
+        double uvi;
 
         //ADC to UV index conversion, based on data from "See UV on Your Skin"
         uvi=0.04*ndata-12.8;
@@ -32,7 +32,7 @@ public class CalculateUVI{
 
     public static long starttime(){
 
-        long StartTime = new Date().getTime();
+        long StartTime = new Date().getTime()/1000;
 
         return StartTime;
 
@@ -40,13 +40,13 @@ public class CalculateUVI{
 
     public static long endtime(){
 
-        long EndTime = new Date().getTime();
+        long EndTime = new Date().getTime()/1000;
 
         return EndTime;
 
     }
 
-    public static Number Burntime(Number Nuvi){
+    public static double burnresistance() {
 
         //SkinType
         // 1 -> 67min / UVI
@@ -59,13 +59,25 @@ public class CalculateUVI{
 
         int type = 1;
         int[] skinlimit = {67, 100, 200, 300, 400, 500};
-        double SPF = 15;
-        double Duvi = (double) Nuvi;
-        double burntime;
+        double SPF = 0.1; //Skin burns 10 times faster, set to 1 for no sunscreen
+        double burnresistance;
 
-        burntime = skinlimit[type]*SPF / Duvi;
+        burnresistance = skinlimit[type] * SPF;
 
-        return burntime;
+        return burnresistance;
+
     }
 
+    public static double remresist(double dUVI, double remresist, long exptime){
+
+        //exptime should be in seconds
+
+        remresist=remresist-dUVI*exptime/60;
+
+        if (remresist < 0){remresist=0;}
+
+        return remresist;
+
+    }
 }
+

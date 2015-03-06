@@ -4,19 +4,28 @@
     android:layout_height="fill_parent"
     android:background="#ff000000">
 
+    <com.androidplot.pie.PieChart
+        android:id="@+id/mySimplePieChart"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:layout_weight="1"
+        android:layout_centerVertical="true"
+        android:layout_alignRight="@+id/close"
+        android:layout_alignEnd="@+id/close" />
+
     <com.androidplot.xy.XYPlot
         android:id="@+id/mySimpleXYPlot"
-        android:layout_width="fill_parent"
-        android:layout_height="250dp"
+        android:layout_width="wrap_content"
+        android:layout_height="150dp"
 
-        androidPlot.rangeLabel="Sunlight"
-        androidPlot.titleWidget.labelPaint.textSize="15dp"
-        androidPlot.domainLabelWidget.labelPaint.textSize="15dp"
-        androidPlot.rangeLabelWidget.labelPaint.textSize="15dp"
-        androidPlot.graphWidget.marginTop="20dp"
-        androidPlot.graphWidget.marginLeft="5dp"
-        androidPlot.graphWidget.marginBottom="25dp"
-        androidPlot.graphWidget.marginRight="20dp"
+
+        androidPlot.titleWidget.labelPaint.textSize="0dp"
+        androidPlot.domainLabelWidget.labelPaint.textSize="0dp"
+        androidPlot.rangeLabelWidget.labelPaint.textSize="0dp"
+        androidPlot.graphWidget.marginTop="0dp"
+        androidPlot.graphWidget.marginLeft="0dp"
+        androidPlot.graphWidget.marginBottom="0dp"
+        androidPlot.graphWidget.marginRight="0dp"
         androidPlot.graphWidget.rangeLabelPaint.textSize="0dp"
         androidPlot.graphWidget.rangeOriginLabelPaint.textSize="0dp"
         androidPlot.graphWidget.domainLabelPaint.textSize="0dp"
@@ -25,7 +34,9 @@
         android:background="#ff000000"
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:layout_alignParentStart="true"
+        android:layout_alignRight="@+id/mySimplePieChart"
+        android:layout_alignEnd="@+id/mySimplePieChart" />
 
     <TextView
         android:id="@+id/label"
@@ -35,51 +46,56 @@
 
     <EditText
         android:id="@+id/entry"
-        android:layout_width="fill_parent"
+        android:layout_width="150dp"
         android:layout_height="wrap_content"
         android:background="@android:drawable/editbox_background"
-        android:layout_below="@id/label"/>
+        android:layout_alignBottom="@+id/add"
+        android:layout_below="@+id/label" />
     <Button
         android:id="@+id/open"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/entry"
+        android:layout_width="75dp"
+        android:layout_height="50dp"
+        android:text="Open"
+        android:layout_marginRight="15dp"
+        android:layout_marginEnd="29dp"
+        android:layout_above="@+id/Update"
         android:layout_alignParentRight="true"
-        android:layout_marginLeft="10dip"
-        android:text="Open" />
+        android:layout_alignParentEnd="true" />
 
     <Button
         android:id="@+id/close"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="75dp"
+        android:layout_height="50dp"
         android:text="Close"
-        android:layout_toLeftOf="@id/open"
-        android:layout_alignTop="@id/open" />
+        android:layout_below="@+id/open"
+        android:layout_alignLeft="@+id/open"
+        android:layout_alignStart="@+id/open" />
 
     <Button
         android:id="@+id/add"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="75dp"
+        android:layout_height="50dp"
         android:text="Add"
-        android:layout_below="@+id/open"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true" />
+        android:layout_below="@+id/label"
+        android:layout_toLeftOf="@+id/open"
+        android:layout_toStartOf="@+id/open" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Last Update:"
         android:id="@+id/Update"
-        android:layout_alignBottom="@+id/close"
+        android:layout_below="@+id/entry"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="24dp" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Exposure Time Left: "
         android:id="@+id/ExpTime"
-        android:layout_alignBottom="@+id/add"
+        android:layout_below="@+id/close"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
 

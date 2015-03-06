@@ -1,6 +1,7 @@
-package com.kmhord.bluetoothtest;
+package com.kmhord.SpitFire;
 
 import android.graphics.Color;
+import android.graphics.EmbossMaskFilter;
 import android.graphics.LinearGradient;
 import android.graphics.Paint;
 import android.graphics.Shader;
@@ -8,27 +9,37 @@ import android.graphics.Shader;
 import com.androidplot.xy.BoundaryMode;
 import com.androidplot.xy.LineAndPointFormatter;
 import com.androidplot.xy.PointLabelFormatter;
+import com.androidplot.xy.PointLabeler;
 import com.androidplot.xy.SimpleXYSeries;
 import com.androidplot.xy.XYPlot;
 import com.androidplot.xy.XYSeries;
 import com.androidplot.xy.XYStepMode;
 
+import com.androidplot.pie.PieChart;
+import com.androidplot.pie.PieRenderer;
+import com.androidplot.pie.Segment;
+import com.androidplot.pie.SegmentFormatter;
+
+
 import java.text.DecimalFormat;
 import java.util.Arrays;
 
-public class GraphData{
+
+public class GraphData extends MainActivity{
 
 
     public void plotxygraph(Number[] storeddata, XYPlot mySimpleXYPlot){
 
         mySimpleXYPlot.clear();
 
-        // Turn the above arrays into XYSeries':
+           // Turn the above arrays into XYSeries':
         XYSeries series1 = new SimpleXYSeries(Arrays.asList(storeddata),
                 // SimpleXYSeries takes a List so turn our array into a list
                 SimpleXYSeries.ArrayFormat.Y_VALS_ONLY,
                 // Y_VALS_ONLY means use the element index as the x value
                 "Series1"); // Set the display title of the series
+
+
 
         // reduce the number of range labels
         mySimpleXYPlot.setTicksPerRangeLabel(3);
@@ -87,7 +98,15 @@ public class GraphData{
                 Color.rgb(0, 100, 0),                   // point color
                 Color.BLACK, new PointLabelFormatter());                            // fill color
 
-        // setup our line fill paint to be a slightly transparent gradient:
+        series1Format.setPointLabeler(new PointLabeler() {
+            DecimalFormat df = new DecimalFormat("##.#");
+
+            @Override
+            public String getLabel(XYSeries series, int index) {
+                return df.format(series.getY(index));
+            }
+        });
+             // setup our line fill paint to be a slightly transparent gradient:
         Paint lineFill = new Paint();
         lineFill.setAlpha(200);
         lineFill.setShader(new LinearGradient(0, 0, 0, 250, Color.WHITE, Color.rgb(255,102,0), Shader.TileMode.MIRROR));
@@ -99,6 +118,41 @@ public class GraphData{
 
         mySimpleXYPlot.redraw();
 
+    }
+
+    public void plotpiegraph(PieChart pie, double init_resist, double rem_resist){
+
+        pie.clear();
+
+        Paint paint = new Paint();
+
+        Segment s1;
+        Segment s2;
+
+        double pexpose = rem_resist/(init_resist)*100;
+        double pleftover=100-pexpose;
+
+        s1 = new Segment("Remaining", pexpose);
+        s2 = new Segment("Exposure", pleftover);
+
+        //EmbossMaskFilter emf = new EmbossMaskFilter(
+         //       new float[]{1, 1, 1}, 0.4f, 10, 8.2f);
+
+        SegmentFormatter sf1 = new SegmentFormatter();
+        sf1.getFillPaint().setColor(Color.GRAY);
+        //sf1.getFillPaint().setMaskFilter(emf);
+
+        SegmentFormatter sf2 = new SegmentFormatter();
+        sf2.getFillPaint().setColor(Color.RED);
+       // sf2.getFillPaint().setMaskFilter(emf);
+
+        pie.addSeries(s1, sf1);
+        pie.addSeries(s2, sf2);
+
+        pie.getBorderPaint().setColor(Color.TRANSPARENT);
+        pie.getBackgroundPaint().setColor(Color.TRANSPARENT);
+
+        pie.redraw();
     }
 
 

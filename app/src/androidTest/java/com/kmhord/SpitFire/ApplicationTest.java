@@ -1,4 +1,4 @@
-package com.kmhord.bluetoothtest;
+package com.kmhord.SpitFire;
 
 import android.app.Application;
 import android.test.ApplicationTestCase;
